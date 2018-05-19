@@ -1,15 +1,19 @@
 {
   "name": "js-multimethod",
   "version": "1.0.0",
-  "description": "",
+  "description": "just for fun multimethod project",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "tap test/*.js",
+    "watch-test": "nodemon  --exec npm test"
   },
   "keywords": [],
   "author": "",
-  "license": "GPL-3",
-  "dependencies": {
-    "tap": "11.1.5"
+  "license": "GPL-3.0-or-later",
+  "dependencies": {},
+  "devDependencies": {
+    "eslint": "^4.19.1",
+    "nodemon": "^1.17.4",
+    "tap": "^12.0.1"
   }
 }
