@@ -38,9 +38,15 @@ function multi(dispatcher){
     return mm;
   }
 
+  function detach(dispatch){
+    _methods.delete(dispatch);
+    return mm;
+  }
+
   mm.methods = methods;
   mm.attach = attach;
   mm.dispatcher = dispatcher;
+  mm.detach = detach;
   
   return mm;
 }

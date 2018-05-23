@@ -38,7 +38,7 @@ tap.test('calling multimethod', function(t){
   //route to expected function
   t.match(abc, {first:'A'});
   t.match(bar, {first:'B'});
-
+  
   //passes on arguments
   t.equal(abc.msg, 'abc');
   
@@ -50,10 +50,16 @@ tap.test('calling multimethod', function(t){
   t.end();
 });
 
-//goal: 
-//      / add dispatcher
-//      / attach a method
-//      call and see it works
+tap.test('detach', function(t){
+  const mm = firstLetterMulti();
+  
+  //impl attached
+  t.match(mm('abc'), {first:'A'});
+  mm.detach('a');
+  //impl NOT attached
+  t.throws(mm.bind({},'abc'));
+  t.end();
+});
 
 /**
  * returns a simple multimethod with a couple impls

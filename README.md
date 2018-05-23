@@ -13,7 +13,7 @@ pretty cool and I wanted implement them in JavaScript to learn more about them
 
 ### More general stuff
 
-* [ ] de-register (detach) methods
+* [X] ~~*de-register (detach) methods*~~ [2018-05-23]
 * [ ] default method
 * [ ] replace methods (_hold on this 'til later; not currently clear it's a
   problem to just allow methods to be overwritten_)
@@ -33,3 +33,4 @@ pretty cool and I wanted implement them in JavaScript to learn more about them
 * [x] get methods map
 * [x] get dispatcher
 * [ ] get dispatch hierarchy
+* [ ] "handles" function to see if a call is handle-able (what to do if there's a default method?)
