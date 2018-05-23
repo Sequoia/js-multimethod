@@ -14,7 +14,7 @@ pretty cool and I wanted implement them in JavaScript to learn more about them
 ### More general stuff
 
 * [X] ~~*de-register (detach) methods*~~ [2018-05-23]
-* [ ] default method
+* [X] ~~*default method*~~ [2018-05-23]
 * [ ] replace methods (_hold on this 'til later; not currently clear it's a
   problem to just allow methods to be overwritten_)
 

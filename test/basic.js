@@ -52,12 +52,23 @@ tap.test('calling multimethod', function(t){
 
 tap.test('detach', function(t){
   const mm = firstLetterMulti();
-  
   //impl attached
   t.match(mm('abc'), {first:'A'});
   mm.detach('a');
   //impl NOT attached
   t.throws(mm.bind({},'abc'));
+  t.end();
+});
+
+tap.test('catchall', function(t){
+  const mm = firstLetterMulti();
+  t.throws(mm.bind({}, 'xyz'));
+  mm.catchall((msg)=> ({first: '??', msg}));
+  t.match(mm('xyz'), {first:'??', msg:'xyz'});
+  
+  //passing null unsets catchall
+  mm.catchall(null);
+  t.throws(mm.bind({}, 'xyz'));
   t.end();
 });
 
