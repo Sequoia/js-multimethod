@@ -18,10 +18,11 @@ pretty cool and I wanted implement them in JavaScript to learn more about them
 * [ ] replace methods (_hold on this 'til later; not currently clear it's a
   problem to just allow methods to be overwritten_)
 
-### Dispatch heirarchy
+### Dispatch hierarchy
 
-* [ ] "derive" method ("is a" type hierarchy of dispatch types)
-* [ ] method to pass a dispatch hierarchy in/replace one (for sharing)
+* [X] ~~*"derive" method ("is a" type hierarchy of dispatch types)*~~ [2018-06-19]
+* [X] ~~*resolve a child type to a parent type for function dispatch*~~ [2018-06-19]
+* [ ] method to pass a dispatch hierarchy in/replace one (for sharing) (_low priority_)
 
 ### _Multiple dispatch!!_
 
@@ -33,4 +34,4 @@ pretty cool and I wanted implement them in JavaScript to learn more about them
 * [x] get methods map
 * [x] get dispatcher
 * [ ] get dispatch hierarchy
-* [ ] "handles" function to see if a call is handle-able (what to do if there's a default method?)
+* [X] ~~*"handles" function to see if a call is handle-able (what to do if there's a default method?)*~~ [2018-06-19]

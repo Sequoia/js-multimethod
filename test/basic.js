@@ -29,6 +29,19 @@ tap.test('attaching methods', function(t){
   t.end();
 });
 
+tap.test('getMethod', function(t){
+  const mm = multi(firstLetter);
+  const aMethod = (msg) => ({ first: 'A', msg });
+  const bMethod = (msg) => ({ first: 'B', msg });
+  mm.attach('a', aMethod);
+  mm.attach('b', bMethod);
+
+  t.equal(mm.getMethod('a'), aMethod);
+  t.equal(mm.getMethod('b'), bMethod);
+  
+  t.end();
+});
+
 tap.type(multi(function(){}).dispatcher, Function, 'mm exposes dispatcher');
 
 tap.test('calling multimethod', function(t){
@@ -69,6 +82,43 @@ tap.test('catchall', function(t){
   //passing null unsets catchall
   mm.catchall(null);
   t.throws(mm.bind({}, 'xyz'));
+  t.end();
+});
+
+tap.test('derive', function(t){
+  const mm = firstLetterMulti();
+  t.type(mm.derive, 'function');
+
+  mm.derive('x','a');
+  t.match(mm('xyz'),{first:'A', msg:'xyz'});
+
+  mm.derive('y', 'x');
+  mm.derive('n', 'y');
+  t.match(mm('noot!'),{first:'A', msg:'noot!'},
+    'multi-level derive (n->y->x->a)');
+
+  mm.attach('x', () => 'new method for dispatch X!');
+  t.match(mm('noot!'), 'new method for dispatch X!',
+    'new method attached to hierarchy');
+
+  mm.detach('a').detach('x')
+    .catchall( () => '~~pass~~' );
+
+  t.match(mm('noot!'), '~~pass~~',
+    'after detaching methods, hits default');
+
+  t.end();
+});
+
+tap.test('handles', function(t){
+  const mm = firstLetterMulti();
+
+  t.notOk(mm.handles('x'));
+  t.ok(mm.handles('a'));
+  
+  mm.catchall( () => 'pass!' );
+  t.notOk(mm.handles('x'), 'not affected by catchall/default');
+
   t.end();
 });
 

@@ -9,10 +9,11 @@ function multi(dispatcher){
    * @type {Map<*,Function>} _methods
    */
   const _methods = new Map;
+  const _hierarchy = {};
 
   const mm = function(...args){
     const dispatch = dispatcher.apply(null, args);
-    const impl = _methods.get(dispatch) || _methods.get(dfault);
+    const impl = getMethod(dispatch) || _methods.get(dfault);
 
     if(typeof impl === 'undefined'){
       //vintage error type
@@ -21,6 +22,29 @@ function multi(dispatcher){
     
     return impl.apply(null, args);
   };
+
+  /**
+   * @param {*} dispatch a function for this value will be returned if it exists
+   * @return {Function|undefined}
+   */
+  function getMethod(dispatch){
+    while(dispatch){
+      if(_methods.get(dispatch)){
+        return _methods.get(dispatch);
+      }
+      dispatch = _hierarchy[dispatch];
+    }
+  }
+
+  /**
+   * Returns true if value is *explicitly* handled by this multimethod
+   * (not handled by catchall/default method)
+   * @param {*} value 
+   * @return {Boolean}
+   */
+  function handles(value){
+    return Boolean(getMethod(value));
+  }
 
   /**
    * returns a clone of the internal _methods Map
@@ -60,8 +84,23 @@ function multi(dispatcher){
     return mm;
   }
 
+  /**
+   * allows values with dispatch of `child` to be handled by impl of `parent`
+   * @example
+   *  ```
+   *  mm(x => x)
+   *    .attach('animal', animalHandlerFn)
+   *    .derive('cat','animal');
+   *  mm('cat');  //handled by animalHandlerFn
+   *  ```
+   * @param {*} child
+   */
+  function derive(child, parent){
+    _hierarchy[child] = parent;
+  }
+
   return Object.assign(mm, {
-    methods, attach, dispatcher, detach, catchall
+    methods, attach, dispatcher, detach, catchall, derive, handles, getMethod
   });
   
 }
