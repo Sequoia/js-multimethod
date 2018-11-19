@@ -86,6 +86,15 @@ function multi(dispatcher){
 
   /**
    * allows values with dispatch of `child` to be handled by impl of `parent`
+	 * read like "derive child FROM parent"
+	 * Derive works recursively 'til:
+	 * a) method is matched for that dispatch value or
+	 * b) no method matched and no more derived values --> call catchall
+	 *
+	 * Note that if derive Z from Y & Y from X, but Y both Y and X have methods
+	 * attached, mm(Z) will call the handler attached for X, i.e. the first one
+	 * it encounters while walking up the hierarchy
+	 *
    * @example
    *  ```
    *  mm(x => x)
@@ -94,6 +103,7 @@ function multi(dispatcher){
    *  mm('cat');  //handled by animalHandlerFn
    *  ```
    * @param {*} child
+   * @param {*} parent
    */
   function derive(child, parent){
     _hierarchy[child] = parent;

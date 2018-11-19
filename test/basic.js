@@ -90,21 +90,26 @@ tap.test('derive', function(t){
   t.type(mm.derive, 'function');
 
   mm.derive('x','a');
-  t.match(mm('xyz'),{first:'A', msg:'xyz'});
+  t.match(mm('xyz'),{first:'A', msg:'xyz'},
+    'single-level derive (x->a)');
 
+  // y from x from a
   mm.derive('y', 'x');
-  mm.derive('n', 'y');
-  t.match(mm('noot!'),{first:'A', msg:'noot!'},
-    'multi-level derive (n->y->x->a)');
+  // z from y from x from a
+  mm.derive('z', 'y');
+  t.match(mm('zoot!'),{first:'A', msg:'zoot!'},
+    'multi-level derive (z->y->x->a)');
 
   mm.attach('x', () => 'new method for dispatch X!');
-  t.match(mm('noot!'), 'new method for dispatch X!',
-    'new method attached to hierarchy');
+  t.match(mm('xxx'), 'new method for dispatch X!',
+    'new method attached to hierarchy matches self');
+  t.match(mm('zoot!'), 'new method for dispatch X!',
+    'new method attached to hierarchy matches derived (z->y->x)');
 
   mm.detach('a').detach('x')
     .catchall( () => '~~pass~~' );
 
-  t.match(mm('noot!'), '~~pass~~',
+  t.match(mm('zoot!'), '~~pass~~',
     'after detaching methods, hits default');
 
   t.end();
